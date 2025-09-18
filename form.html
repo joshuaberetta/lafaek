@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Monitoring Dashboard</title>
+    <title>Data Collection Form</title>
     <style>
         * {
             margin: 0;
@@ -120,32 +120,32 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="nav-item active">Dashboard</a>
-            <a href="/form" class="nav-item">Form</a>
+            <a href="/" class="nav-item">Dashboard</a>
+            <a href="/form" class="nav-item active">Form</a>
         </div>
     </nav>
 
-    <!-- Dashboard Content -->
+    <!-- Form Content -->
     <div class="container">
         <div class="iframe-wrapper">
-            <div class="loading" id="dashboard-loading">
-                <div>Loading dashboard...</div>
-                <div id="dashboard-fallback" style="display: none;">
+            <div class="loading" id="form-loading">
+                <div>Loading form...</div>
+                <div id="form-fallback" style="display: none;">
                     <div class="error-message">
-                        Dashboard embedding is restricted.<br>
-                        Click below to view the dashboard:
+                        Form embedding is restricted.<br>
+                        Click below to access the form:
                     </div>
-                    <a href="https://app.powerbi.com/view?r=eyJrIjoiY2YwMDUxM2YtZTg0Mi00ZTYyLTg2MWQtZWEyNDIwYmFhNjY1IiwidCI6ImI0YTc0NjQyLWFkOTMtNGQ1Ni1iOWVjLWU2YzRmZTA4MGE3ZSIsImMiOjN9" 
+                    <a href="https://ee.kobotoolbox.org/i/dN5kDdJ7" 
                        target="_blank" 
                        class="direct-link">
-                        View Community Monitoring Dashboard
+                        Open Data Collection Form
                     </a>
                 </div>
             </div>
             <iframe 
                 class="iframe-content" 
-                id="dashboard-iframe"
-                src="https://app.powerbi.com/view?r=eyJrIjoiY2YwMDUxM2YtZTg0Mi00ZTYyLTg2MWQtZWEyNDIwYmFhNjY1IiwidCI6ImI0YTc0NjQyLWFkOTMtNGQ1Ni1iOWVjLWU2YzRmZTA4MGE3ZSIsImMiOjN9"
+                id="form-iframe"
+                src="https://ee.kobotoolbox.org/i/dN5kDdJ7"
                 frameborder="0" 
                 allowFullScreen="true"
                 style="display: none;">
@@ -154,24 +154,24 @@
     </div>
 
     <script>
-        // Dashboard iframe loading
-        const dashboardIframe = document.getElementById('dashboard-iframe');
-        const dashboardLoading = document.getElementById('dashboard-loading');
-        const dashboardFallback = document.getElementById('dashboard-fallback');
-        let dashboardLoaded = false;
+        // Form iframe loading
+        const formIframe = document.getElementById('form-iframe');
+        const formLoading = document.getElementById('form-loading');
+        const formFallback = document.getElementById('form-fallback');
+        let formLoaded = false;
         
-        dashboardIframe.onload = function() {
-            if (!dashboardLoaded) {
-                dashboardLoaded = true;
-                dashboardLoading.style.display = 'none';
-                dashboardIframe.style.display = 'block';
+        formIframe.onload = function() {
+            if (!formLoaded) {
+                formLoaded = true;
+                formLoading.style.display = 'none';
+                formIframe.style.display = 'block';
             }
         };
         
         setTimeout(function() {
-            if (!dashboardLoaded) {
-                document.querySelector('#dashboard-loading > div:first-child').style.display = 'none';
-                dashboardFallback.style.display = 'block';
+            if (!formLoaded) {
+                document.querySelector('#form-loading > div:first-child').style.display = 'none';
+                formFallback.style.display = 'block';
             }
         }, 5000);
     </script>
