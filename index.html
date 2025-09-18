@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Monitoring Croc Dashboard - Timor-Leste</title>
+    <title>Community Monitoring Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -14,17 +14,66 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
+        /* Navigation */
+        .navbar {
+            background-color: #0078d4;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-item {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .nav-item.active {
+            border-bottom-color: #fff;
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Main content */
         .container {
-            width: 100%;
-            height: 100vh;
+            flex: 1;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .page {
+            display: none;
+            flex: 1;
+        }
+        
+        .page.active {
+            display: flex;
+            flex-direction: column;
         }
         
         .iframe-wrapper {
             width: 100%;
-            height: 100%;
+            flex: 1;
             border: 1px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
@@ -32,7 +81,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        .powerbi-iframe {
+        .iframe-content {
             width: 100%;
             height: 100%;
             border: none;
@@ -40,60 +89,218 @@
         
         .loading {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
             background-color: white;
+            text-align: center;
+        }
+        
+        .error-message {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .direct-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #0078d4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .direct-link:hover {
+            background-color: #106ebe;
         }
         
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
             }
+            
+            .nav-item {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="nav-item active" onclick="showPage('dashboard')">Dashboard</button>
+            <button class="nav-item" onclick="showPage('form')">Form</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <div class="container">
-        <div class="iframe-wrapper">
-            <div class="loading" id="loading">
-                Loading dashboard...
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="iframe-wrapper">
+                <div class="loading" id="dashboard-loading">
+                    <div>Loading dashboard...</div>
+                    <div id="dashboard-fallback" style="display: none;">
+                        <div class="error-message">
+                            Dashboard embedding is restricted.<br>
+                            Click below to view the dashboard:
+                        </div>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiY2YwMDUxM2YtZTg0Mi00ZTYyLTg2MWQtZWEyNDIwYmFhNjY1IiwidCI6ImI0YTc0NjQyLWFkOTMtNGQ1Ni1iOWVjLWU2YzRmZTA4MGE3ZSIsImMiOjN9" 
+                           target="_blank" 
+                           class="direct-link">
+                            View Community Monitoring Dashboard
+                        </a>
+                    </div>
+                </div>
+                <iframe 
+                    class="iframe-content" 
+                    id="dashboard-iframe"
+                    src="https://app.powerbi.com/view?r=eyJrIjoiY2YwMDUxM2YtZTg0Mi00ZTYyLTg2MWQtZWEyNDIwYmFhNjY1IiwidCI6ImI0YTc0NjQyLWFkOTMtNGQ1Ni1iOWVjLWU2YzRmZTA4MGE3ZSIsImMiOjN9"
+                    frameborder="0" 
+                    allowFullScreen="true"
+                    style="display: none;">
+                </iframe>
             </div>
-            <iframe 
-                class="powerbi-iframe" 
-                id="dashboard-iframe"
-                src="https://app.powerbi.com/view?r=eyJrIjoiY2YwMDUxM2YtZTg0Mi00ZTYyLTg2MWQtZWEyNDIwYmFhNjY1IiwidCI6ImI0YTc0NjQyLWFkOTMtNGQ1Ni1iOWVjLWU2YzRmZTA4MGE3ZSIsImMiOjN9"
-                frameborder="0" 
-                allowFullScreen="true"
-                style="display: none;">
-            </iframe>
+        </div>
+
+        <!-- Form Page -->
+        <div class="page" id="form-page">
+            <div class="iframe-wrapper">
+                <div class="loading" id="form-loading">
+                    <div>Loading form...</div>
+                    <div id="form-fallback" style="display: none;">
+                        <div class="error-message">
+                            Form embedding is restricted.<br>
+                            Click below to access the form:
+                        </div>
+                        <a href="https://ee.kobotoolbox.org/i/dN5kDdJ7" 
+                           target="_blank" 
+                           class="direct-link">
+                            Open Data Collection Form
+                        </a>
+                    </div>
+                </div>
+                <iframe 
+                    class="iframe-content" 
+                    id="form-iframe"
+                    src="https://ee.kobotoolbox.org/i/dN5kDdJ7"
+                    frameborder="0" 
+                    allowFullScreen="true"
+                    style="display: none;">
+                </iframe>
+            </div>
         </div>
     </div>
 
     <script>
-        const iframe = document.getElementById('dashboard-iframe');
-        const loading = document.getElementById('loading');
-        const fallback = document.getElementById('fallback');
-        let hasLoaded = false;
+        // Page navigation
+        function showPage(pageId, updateURL = true) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            // Add active class to corresponding nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            if (pageId === 'dashboard') {
+                navItems[0].classList.add('active');
+            } else if (pageId === 'form') {
+                navItems[1].classList.add('active');
+            }
+            
+            // Update URL without page reload
+            if (updateURL) {
+                const newURL = pageId === 'dashboard' ? '/' : '/' + pageId;
+                window.history.pushState({page: pageId}, '', newURL);
+            }
+            
+            // Load iframe if not already loaded
+            if (pageId === 'form') {
+                loadFormIfNeeded();
+            }
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            const page = event.state?.page || getPageFromURL();
+            showPage(page, false);
+        });
+
+        // Get page from current URL
+        function getPageFromURL() {
+            const path = window.location.pathname;
+            if (path === '/form' || path === '/form/') {
+                return 'form';
+            }
+            return 'dashboard';
+        }
+
+        // Load correct page on initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialPage = getPageFromURL();
+            showPage(initialPage, false);
+        });
+
+        // Dashboard iframe loading
+        const dashboardIframe = document.getElementById('dashboard-iframe');
+        const dashboardLoading = document.getElementById('dashboard-loading');
+        const dashboardFallback = document.getElementById('dashboard-fallback');
+        let dashboardLoaded = false;
         
-        // Hide loading message once iframe loads successfully
-        iframe.onload = function() {
-            if (!hasLoaded) {
-                hasLoaded = true;
-                loading.style.display = 'none';
-                iframe.style.display = 'block';
-                console.log('Dashboard loaded successfully');
+        dashboardIframe.onload = function() {
+            if (!dashboardLoaded) {
+                dashboardLoaded = true;
+                dashboardLoading.style.display = 'none';
+                dashboardIframe.style.display = 'block';
             }
         };
         
-        // Show fallback if iframe fails or doesn't load within 5 seconds
         setTimeout(function() {
-            if (!hasLoaded) {
-                console.log('Dashboard failed to load - showing fallback');
-                document.querySelector('#loading > div:first-child').style.display = 'none';
-                fallback.style.display = 'block';
+            if (!dashboardLoaded) {
+                document.querySelector('#dashboard-loading > div:first-child').style.display = 'none';
+                dashboardFallback.style.display = 'block';
             }
         }, 5000);
+
+        // Form iframe loading
+        let formLoaded = false;
+        let formLoadAttempted = false;
+        
+        function loadFormIfNeeded() {
+            if (formLoadAttempted) return;
+            formLoadAttempted = true;
+            
+            const formIframe = document.getElementById('form-iframe');
+            const formLoading = document.getElementById('form-loading');
+            const formFallback = document.getElementById('form-fallback');
+            
+            formIframe.onload = function() {
+                if (!formLoaded) {
+                    formLoaded = true;
+                    formLoading.style.display = 'none';
+                    formIframe.style.display = 'block';
+                }
+            };
+            
+            setTimeout(function() {
+                if (!formLoaded) {
+                    document.querySelector('#form-loading > div:first-child').style.display = 'none';
+                    formFallback.style.display = 'block';
+                }
+            }, 5000);
+        }
     </script>
 </body>
 </html>
